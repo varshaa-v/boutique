@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Orders | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">All Orders</div>
+
+  <div class="mb-3 d-flex gap-2 flex-wrap">
+    <a href="/admin/orders" class="btn btn-sm <%= statusFilter==='' ? 'btn-primary-boutique' : 'btn-outline-secondary' %>">All</a>
+    <a href="/admin/orders?status=pending" class="btn btn-sm <%= statusFilter==='pending' ? 'btn-primary-boutique' : 'btn-outline-secondary' %>">Pending</a>
+    <a href="/admin/orders?status=assigned" class="btn btn-sm <%= statusFilter==='assigned' ? 'btn-primary-boutique' : 'btn-outline-secondary' %>">Assigned</a>
+    <a href="/admin/orders?status=in_progress" class="btn btn-sm <%= statusFilter==='in_progress' ? 'btn-primary-boutique' : 'btn-outline-secondary' %>">In Progress</a>
+    <a href="/admin/orders?status=query_raised" class="btn btn-sm <%= statusFilter==='query_raised' ? 'btn-primary-boutique' : 'btn-outline-secondary' %>">Query Raised</a>
+    <a href="/admin/orders?status=completed" class="btn btn-sm <%= statusFilter==='completed' ? 'btn-primary-boutique' : 'btn-outline-secondary' %>">Completed</a>
+  </div>
+
+  <div class="card-soft">
+    <table class="table table-boutique align-middle">
+      <thead><tr><th>#</th><th>Garment</th><th>Customer</th><th>Tailor</th><th>Fabric</th><th>Due Date</th><th>Priority</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <% orders.forEach(o => { %>
+          <tr>
+            <td>#<%= o.id %></td>
+            <td><%= o.garment_type %></td>
+            <td><%= o.customer_name %></td>
+            <td><%= o.tailor_name || '—' %></td>
+            <td><%= o.fabric_name || '—' %></td>
+            <td><%= o.due_date %></td>
+            <td><span class="priority-<%= o.priority %>"><%= o.priority %></span></td>
+            <td><span class="badge-status status-<%= o.status %>"><%= o.status.replace('_',' ') %></span></td>
+            <td><a href="/admin/orders/<%= o.id %>" class="btn btn-sm btn-outline-secondary">Manage</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% if (orders.length === 0) { %>
+      <div class="empty-state"><i class="bi bi-bag"></i><p class="mt-2">No orders in this category.</p></div>
+    <% } %>
+  </div>
+</div>
+</body>
+</html>

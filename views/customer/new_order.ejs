@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>New Order | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">Place a New Order</div>
+  <div class="card-soft" style="max-width:650px;">
+    <form method="POST" action="/customer/orders">
+      <div class="mb-3">
+        <label class="form-label">Garment Type</label>
+        <input class="form-control" name="garment_type" placeholder="e.g. Blouse, Kurti, Suit, Saree Fall" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Customization / Requirements</label>
+        <textarea class="form-control" name="customization_details" rows="4" placeholder="Describe fit, neckline, sleeve style, closures, etc." required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Design Notes (optional)</label>
+        <textarea class="form-control" name="design_notes" rows="2" placeholder="Reference image description, inspiration, special instructions"></textarea>
+      </div>
+      <div class="row g-3">
+        <div class="col-6">
+          <label class="form-label">Due Date</label>
+          <input type="date" class="form-control" name="due_date" required>
+        </div>
+        <div class="col-6">
+          <label class="form-label">Priority</label>
+          <select class="form-select" name="priority">
+            <option value="low">Low</option>
+            <option value="normal" selected>Normal</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary-boutique w-100 mt-3">Submit Order Request</button>
+      <p class="text-muted small mt-2 mb-0">Our team will review your request, assign a tailor, and allocate fabric shortly.</p>
+    </form>
+  </div>
+</div>
+</body>
+</html>

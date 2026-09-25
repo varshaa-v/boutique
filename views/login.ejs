@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Login | StitchStudio</title>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1><i class="bi bi-scissors"></i> StitchStudio</h1>
+      <div class="sub">Boutique & Tailoring Management</div>
+
+      <% if (error) { %>
+        <div class="alert alert-danger py-2"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/login">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" required autofocus>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <button class="btn btn-primary-boutique w-100 py-2">Login</button>
+      </form>
+
+      <p class="text-center mt-3 mb-0" style="font-size:0.9rem;">
+        New customer? <a href="/register">Create an account</a>
+      </p>
+
+      <div class="demo-box">
+        <strong>Demo logins (after running <code>npm run seed</code>):</strong><br>
+        Admin: admin@boutique.com / admin123<br>
+        Tailor: ramesh@boutique.com / tailor123<br>
+        Customer: priya@example.com / customer123
+      </div>
+    </div>
+  </div>
+</body>
+</html>

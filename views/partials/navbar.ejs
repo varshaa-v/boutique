@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg app-navbar">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" href="/<%= currentUser.role %>/dashboard">
+      <i class="bi bi-scissors"></i> Stitch<span>Studio</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto">
+        <% if (currentUser.role === 'admin') { %>
+          <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/orders"><i class="bi bi-bag"></i> Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/tailors"><i class="bi bi-people"></i> Tailors</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/fabrics"><i class="bi bi-layers"></i> Fabrics</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/customers"><i class="bi bi-person-lines-fill"></i> Customers</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/queries"><i class="bi bi-exclamation-circle"></i> Queries</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/messages"><i class="bi bi-chat-dots"></i> Messages</a></li>
+        <% } else if (currentUser.role === 'tailor') { %>
+          <li class="nav-item"><a class="nav-link" href="/tailor/dashboard"><i class="bi bi-speedometer2"></i> My Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="/tailor/queries"><i class="bi bi-exclamation-circle"></i> Raise / View Queries</a></li>
+          <li class="nav-item"><a class="nav-link" href="/tailor/messages"><i class="bi bi-chat-dots"></i> Messages</a></li>
+        <% } else if (currentUser.role === 'customer') { %>
+          <li class="nav-item"><a class="nav-link" href="/customer/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/customer/orders"><i class="bi bi-bag"></i> My Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="/customer/measurements"><i class="bi bi-rulers"></i> Measurements</a></li>
+          <li class="nav-item"><a class="nav-link" href="/customer/messages"><i class="bi bi-chat-dots"></i> Messages</a></li>
+        <% } %>
+      </ul>
+      <span class="navbar-text me-3 text-capitalize">
+        <i class="bi bi-person-circle"></i> <%= currentUser.name %> <span class="role-badge"><%= currentUser.role %></span>
+      </span>
+      <form action="/logout" method="POST" class="d-inline">
+        <button class="btn btn-sm btn-logout"><i class="bi bi-box-arrow-right"></i> Logout</button>
+      </form>
+    </div>
+  </div>
+</nav>

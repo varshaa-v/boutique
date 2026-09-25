@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Order #<%= order.id %> | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <a href="/admin/orders" class="small">&larr; Back to Orders</a>
+  <div class="page-title mt-2">Order #<%= order.id %> — <%= order.garment_type %></div>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="card-soft">
+        <div class="section-title">Order Details</div>
+        <p><strong>Customer:</strong> <%= order.customer_name %> (<%= order.customer_phone || 'no phone on file' %>)</p>
+        <p><strong>Customization / Requirements:</strong><br><%= order.customization_details || '—' %></p>
+        <p><strong>Design Notes:</strong><br><%= order.design_notes || '—' %></p>
+        <p><strong>Order Date:</strong> <%= order.order_date %> &nbsp; | &nbsp; <strong>Due Date:</strong> <%= order.due_date %></p>
+        <p><strong>Current Status:</strong> <span class="badge-status status-<%= order.status %>"><%= order.status.replace('_',' ') %></span></p>
+        <% if (order.status !== 'cancelled' && order.status !== 'completed') { %>
+          <form method="POST" action="/admin/orders/<%= order.id %>/cancel" onsubmit="return confirm('Cancel this order?');">
+            <button class="btn btn-sm btn-outline-danger">Cancel Order</button>
+          </form>
+        <% } %>
+      </div>
+
+      <div class="card-soft">
+        <div class="section-title">Queries Raised on this Order</div>
+        <% if (queries.length === 0) { %>
+          <p class="text-muted small mb-0">No queries raised.</p>
+        <% } %>
+        <% queries.forEach(q => { %>
+          <div class="border-bottom pb-2 mb-2">
+            <span class="badge-status <%= q.status === 'open' ? 'status-query_raised' : 'status-completed' %>"><%= q.status %></span>
+            <span class="text-muted small"><%= q.query_type.replace(/_/g,' ') %> · <%= q.created_at %></span>
+            <div><%= q.message %></div>
+            <% if (q.admin_response) { %><div class="text-muted small mt-1"><strong>Your response:</strong> <%= q.admin_response %></div><% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card-soft">
+        <div class="section-title">Assign / Update</div>
+        <form method="POST" action="/admin/orders/<%= order.id %>/assign">
+          <div class="mb-3">
+            <label class="form-label">Assign Tailor</label>
+            <select class="form-select" name="tailor_id">
+              <option value="">-- Not yet assigned --</option>
+              <% tailors.forEach(t => { %>
+                <option value="<%= t.id %>" <%= order.tailor_id === t.id ? 'selected' : '' %>>
+                  <%= t.name %> (<%= t.active_orders %>/<%= t.capacity_per_week %> active) — <%= t.specialization %>
+                </option>
+              <% }) %>
+            </select>
+            <div class="form-text">Load shown as active orders vs. weekly capacity — pick a tailor with headroom before the due date.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Allocate Fabric</label>
+            <select class="form-select" name="fabric_id">
+              <option value="">-- None --</option>
+              <% fabrics.forEach(f => { %>
+                <option value="<%= f.id %>" <%= order.fabric_id === f.id ? 'selected' : '' %>>
+                  <%= f.name %> (<%= f.color %>) — <%= f.quantity_meters %>m in stock
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Meters to Allocate</label>
+            <input type="number" step="0.1" class="form-control" name="fabric_allocated_meters" value="<%= order.fabric_allocated_meters || '' %>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Due Date</label>
+            <input type="date" class="form-control" name="due_date" value="<%= order.due_date %>">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Priority</label>
+            <select class="form-select" name="priority">
+              <option value="low" <%= order.priority==='low'?'selected':'' %>>Low</option>
+              <option value="normal" <%= order.priority==='normal'?'selected':'' %>>Normal</option>
+              <option value="high" <%= order.priority==='high'?'selected':'' %>>High</option>
+              <option value="urgent" <%= order.priority==='urgent'?'selected':'' %>>Urgent</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary-boutique w-100">Save Assignment</button>
+        </form>
+      </div>
+
+      <div class="card-soft">
+        <div class="section-title">Message Customer / Tailor</div>
+        <a href="/admin/messages" class="btn btn-gold w-100"><i class="bi bi-chat-dots"></i> Go to Messages</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Admin Dashboard | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">Welcome back, <%= currentUser.name %></div>
+
+  <div class="row g-3 mb-2">
+    <div class="col-md-2 col-6">
+      <div class="stat-card bg-maroon">
+        <div class="stat-num"><%= stats.totalOrders %></div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="stat-card bg-gold">
+        <div class="stat-num"><%= stats.pending %></div>
+        <div class="stat-label">Pending</div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="stat-card bg-blue">
+        <div class="stat-num"><%= stats.inProgress %></div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="stat-card bg-green">
+        <div class="stat-num"><%= stats.completed %></div>
+        <div class="stat-label">Completed</div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="stat-card" style="background:linear-gradient(135deg,#b3413a,#8f2e28)">
+        <div class="stat-num"><%= stats.openQueries %></div>
+        <div class="stat-label">Open Queries</div>
+      </div>
+    </div>
+    <div class="col-md-2 col-6">
+      <div class="stat-card" style="background:linear-gradient(135deg,#7b6ea8,#544877)">
+        <div class="stat-num"><%= stats.tailorCount %></div>
+        <div class="stat-label">Tailors on Staff</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-lg-7">
+      <div class="card-soft">
+        <div class="section-title">Upcoming Deadlines</div>
+        <% if (upcomingDeadlines.length === 0) { %>
+          <div class="empty-state py-3"><i class="bi bi-check2-circle"></i><p class="mt-2 mb-0">Nothing due soon.</p></div>
+        <% } else { %>
+          <table class="table table-boutique">
+            <thead><tr><th>Order</th><th>Customer</th><th>Tailor</th><th>Due</th><th>Status</th></tr></thead>
+            <tbody>
+              <% upcomingDeadlines.forEach(o => { %>
+                <tr>
+                  <td><a href="/admin/orders/<%= o.id %>">#<%= o.id %> - <%= o.garment_type %></a></td>
+                  <td><%= o.customer_name %></td>
+                  <td><%= o.tailor_name || '—' %></td>
+                  <td><%= o.due_date %></td>
+                  <td><span class="badge-status status-<%= o.status %>"><%= o.status.replace('_',' ') %></span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card-soft">
+        <div class="section-title">Recent Open Queries</div>
+        <% if (recentQueries.length === 0) { %>
+          <div class="empty-state py-3"><i class="bi bi-emoji-smile"></i><p class="mt-2 mb-0">No open queries. All smooth!</p></div>
+        <% } else { %>
+          <% recentQueries.forEach(q => { %>
+            <div class="border-bottom pb-2 mb-2">
+              <strong><%= q.tailor_name %></strong> · <span class="text-muted" style="font-size:0.8rem;"><%= q.query_type.replace(/_/g,' ') %></span>
+              <div style="font-size:0.9rem;"><%= q.message %></div>
+              <a href="/admin/queries" class="small">Resolve →</a>
+            </div>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

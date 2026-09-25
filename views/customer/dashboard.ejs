@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Dashboard | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <div class="page-title mb-0">Hello, <%= currentUser.name %> 👋</div>
+    <a href="/customer/orders/new" class="btn btn-primary-boutique"><i class="bi bi-plus-lg"></i> Place New Order</a>
+  </div>
+
+  <div class="row g-3 my-1">
+    <div class="col-md-3 col-6">
+      <div class="stat-card bg-maroon"><div class="stat-num"><%= summary.total %></div><div class="stat-label">Total Orders</div></div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card bg-gold"><div class="stat-num"><%= summary.pending %></div><div class="stat-label">Pending Review</div></div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card bg-blue"><div class="stat-num"><%= summary.active %></div><div class="stat-label">Being Stitched</div></div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card bg-green"><div class="stat-num"><%= summary.completed %></div><div class="stat-label">Completed</div></div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="card-soft">
+        <div class="section-title">Recent Orders</div>
+        <% if (orders.length === 0) { %>
+          <div class="empty-state"><i class="bi bi-bag"></i><p class="mt-2">You haven't placed any orders yet.</p><a href="/customer/orders/new" class="btn btn-gold">Place your first order</a></div>
+        <% } %>
+        <% orders.forEach(o => { %>
+          <div class="border-bottom pb-2 mb-2 d-flex justify-content-between">
+            <div>
+              <strong><%= o.garment_type %></strong> <span class="text-muted small">(#<%= o.id %>)</span>
+              <div class="text-muted small">Due: <%= o.due_date %></div>
+            </div>
+            <span class="badge-status status-<%= o.status %>"><%= o.status.replace('_',' ') %></span>
+          </div>
+        <% }) %>
+        <a href="/customer/orders" class="small">View all orders →</a>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card-soft">
+        <div class="section-title">Your Measurements</div>
+        <% if (!measurement || !measurement.chest) { %>
+          <p class="text-muted small">You haven't added your measurements yet.</p>
+          <a href="/customer/measurements" class="btn btn-gold w-100">Add Measurements</a>
+        <% } else { %>
+          <div class="small text-muted mb-2">Last updated: <%= measurement.updated_at %></div>
+          <table class="table table-sm mb-2">
+            <tr><td>Chest</td><td><%= measurement.chest %> in</td></tr>
+            <tr><td>Waist</td><td><%= measurement.waist %> in</td></tr>
+            <tr><td>Hip</td><td><%= measurement.hip %> in</td></tr>
+          </table>
+          <a href="/customer/measurements" class="small">View / edit full measurements →</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

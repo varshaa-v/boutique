@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Messages | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">Messages</div>
+
+  <div class="row g-3">
+    <div class="col-lg-5">
+      <div class="card-soft">
+        <div class="section-title">Send a Message</div>
+        <form method="POST" action="/admin/messages">
+          <div class="mb-2">
+            <label class="form-label">To</label>
+            <select class="form-select" name="receiver_id" required>
+              <option value="">-- Select person --</option>
+              <optgroup label="Tailors">
+                <% people.filter(p=>p.role==='tailor').forEach(p => { %>
+                  <option value="<%= p.id %>"><%= p.name %></option>
+                <% }) %>
+              </optgroup>
+              <optgroup label="Customers">
+                <% people.filter(p=>p.role==='customer').forEach(p => { %>
+                  <option value="<%= p.id %>"><%= p.name %></option>
+                <% }) %>
+              </optgroup>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Related Order ID (optional)</label>
+            <input type="number" class="form-control" name="order_id" placeholder="e.g. 3">
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Subject</label>
+            <input class="form-control" name="subject" placeholder="e.g. Schedule change">
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Message</label>
+            <textarea class="form-control" name="message" rows="4" required></textarea>
+          </div>
+          <button class="btn btn-primary-boutique w-100">Send Message</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-7">
+      <div class="card-soft">
+        <div class="section-title">Recently Sent</div>
+        <% if (sent.length === 0) { %>
+          <p class="text-muted small">No messages sent yet.</p>
+        <% } %>
+        <% sent.forEach(m => { %>
+          <div class="border-bottom pb-2 mb-2">
+            <strong>To: <%= m.receiver_name %></strong>
+            <% if (m.order_id) { %><span class="text-muted small"> · Order #<%= m.order_id %></span><% } %>
+            <span class="text-muted small float-end"><%= m.created_at %></span>
+            <div class="small text-muted"><%= m.subject %></div>
+            <div><%= m.message %></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

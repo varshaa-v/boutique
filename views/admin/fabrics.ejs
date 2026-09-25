@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Fabrics | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="page-title mb-0">Fabric Inventory</div>
+    <button class="btn btn-primary-boutique" data-bs-toggle="modal" data-bs-target="#addFabric"><i class="bi bi-plus-lg"></i> Add Fabric</button>
+  </div>
+
+  <div class="row g-3">
+    <% fabrics.forEach(f => { %>
+      <div class="col-md-4">
+        <div class="card-soft">
+          <div class="d-flex justify-content-between">
+            <h5><%= f.name %></h5>
+            <span class="badge-status <%= f.quantity_meters < 5 ? 'status-query_raised' : 'status-completed' %>">
+              <%= f.quantity_meters %> m left
+            </span>
+          </div>
+          <div class="text-muted small mb-2"><%= f.type %> · <%= f.color %></div>
+          <form method="POST" action="/admin/fabrics/<%= f.id %>/restock" class="d-flex gap-2">
+            <input type="number" step="0.1" name="add_meters" class="form-control form-control-sm" placeholder="Add meters">
+            <button class="btn btn-sm btn-gold">Restock</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <% if (fabrics.length === 0) { %>
+    <div class="empty-state"><i class="bi bi-layers"></i><p class="mt-2">No fabrics added yet.</p></div>
+  <% } %>
+</div>
+
+<div class="modal fade" id="addFabric" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="/admin/fabrics">
+        <div class="modal-header"><h5 class="modal-title">Add Fabric</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <div class="mb-2"><label class="form-label">Fabric Name</label><input class="form-control" name="name" required></div>
+          <div class="mb-2"><label class="form-label">Type</label><input class="form-control" name="type" placeholder="Cotton, Silk, Linen..."></div>
+          <div class="mb-2"><label class="form-label">Color</label><input class="form-control" name="color"></div>
+          <div class="mb-2"><label class="form-label">Quantity (meters)</label><input type="number" step="0.1" class="form-control" name="quantity_meters" required></div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-primary-boutique">Add</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

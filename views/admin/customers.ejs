@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Customers | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">Customers</div>
+  <div class="card-soft">
+    <table class="table table-boutique align-middle">
+      <thead><tr><th>Name</th><th>Contact</th><th>Total Orders</th><th></th></tr></thead>
+      <tbody>
+        <% customers.forEach(c => { %>
+          <tr>
+            <td><%= c.name %></td>
+            <td><%= c.email %><br><span class="text-muted small"><%= c.phone %></span></td>
+            <td><%= c.order_count %></td>
+            <td><a href="/admin/customers/<%= c.id %>" class="btn btn-sm btn-outline-secondary">View</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% if (customers.length === 0) { %>
+      <div class="empty-state"><i class="bi bi-people"></i><p class="mt-2">No customers yet.</p></div>
+    <% } %>
+  </div>
+</div>
+</body>
+</html>

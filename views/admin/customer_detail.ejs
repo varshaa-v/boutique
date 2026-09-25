@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title><%= customer.name %> | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <a href="/admin/customers" class="small">&larr; Back to Customers</a>
+  <div class="page-title mt-2"><%= customer.name %></div>
+  <p class="text-muted"><%= customer.email %> · <%= customer.phone %></p>
+
+  <div class="row g-3">
+    <div class="col-lg-5">
+      <div class="card-soft">
+        <div class="section-title">Measurements</div>
+        <% if (!measurement || !measurement.chest) { %>
+          <p class="text-muted small mb-0">Customer hasn't submitted measurements yet.</p>
+        <% } else { %>
+          <table class="table table-sm">
+            <tr><td>Chest</td><td><%= measurement.chest %> in</td></tr>
+            <tr><td>Waist</td><td><%= measurement.waist %> in</td></tr>
+            <tr><td>Hip</td><td><%= measurement.hip %> in</td></tr>
+            <tr><td>Shoulder</td><td><%= measurement.shoulder %> in</td></tr>
+            <tr><td>Sleeve Length</td><td><%= measurement.sleeve_length %> in</td></tr>
+            <tr><td>Shirt Length</td><td><%= measurement.shirt_length %> in</td></tr>
+            <tr><td>Inseam</td><td><%= measurement.inseam %> in</td></tr>
+            <tr><td>Neck</td><td><%= measurement.neck %> in</td></tr>
+          </table>
+          <p class="text-muted small"><%= measurement.notes %></p>
+        <% } %>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card-soft">
+        <div class="section-title">Order History</div>
+        <table class="table table-boutique">
+          <thead><tr><th>#</th><th>Garment</th><th>Status</th><th>Due</th></tr></thead>
+          <tbody>
+            <% orders.forEach(o => { %>
+              <tr>
+                <td>#<%= o.id %></td>
+                <td><%= o.garment_type %></td>
+                <td><span class="badge-status status-<%= o.status %>"><%= o.status.replace('_',' ') %></span></td>
+                <td><%= o.due_date %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

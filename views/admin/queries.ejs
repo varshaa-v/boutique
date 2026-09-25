@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Queries | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">Tailor Queries</div>
+
+  <% if (queries.length === 0) { %>
+    <div class="empty-state"><i class="bi bi-emoji-smile"></i><p class="mt-2">No queries yet.</p></div>
+  <% } %>
+
+  <% queries.forEach(q => { %>
+    <div class="card-soft">
+      <div class="d-flex justify-content-between flex-wrap">
+        <div>
+          <span class="badge-status <%= q.status === 'open' ? 'status-query_raised' : 'status-completed' %>"><%= q.status %></span>
+          <strong class="ms-2"><%= q.tailor_name %></strong>
+          <span class="text-muted small"> on Order #<%= q.order_id %> (<%= q.garment_type %>) for <%= q.customer_name %></span>
+        </div>
+        <span class="text-muted small"><%= q.created_at %></span>
+      </div>
+      <div class="mt-2"><strong><%= q.query_type.replace(/_/g,' ') %>:</strong> <%= q.message %></div>
+
+      <% if (q.status === 'open') { %>
+        <form method="POST" action="/admin/queries/<%= q.id %>/resolve" class="mt-2 d-flex gap-2">
+          <input class="form-control form-control-sm" name="admin_response" placeholder="Type your response / resolution..." required>
+          <button class="btn btn-sm btn-gold">Resolve</button>
+        </form>
+      <% } else { %>
+        <div class="text-muted small mt-1"><strong>Response:</strong> <%= q.admin_response %></div>
+      <% } %>
+    </div>
+  <% }) %>
+</div>
+</body>
+</html>

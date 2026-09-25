@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Register | StitchStudio</title>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Create Account</h1>
+      <div class="sub">Sign up as a customer to place orders and track them</div>
+
+      <% if (error) { %>
+        <div class="alert alert-danger py-2"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/register">
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Phone</label>
+          <input type="text" name="phone" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required minlength="6">
+        </div>
+        <button class="btn btn-primary-boutique w-100 py-2">Create Account</button>
+      </form>
+
+      <p class="text-center mt-3 mb-0" style="font-size:0.9rem;">
+        Already have an account? <a href="/login">Login</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

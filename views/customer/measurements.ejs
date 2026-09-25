@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Measurements | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">My Measurements</div>
+  <div class="card-soft" style="max-width:600px;">
+    <form method="POST" action="/customer/measurements">
+      <div class="row g-3">
+        <div class="col-6"><label class="form-label">Chest (in)</label><input type="number" step="0.1" class="form-control" name="chest" value="<%= measurement ? measurement.chest : '' %>"></div>
+        <div class="col-6"><label class="form-label">Waist (in)</label><input type="number" step="0.1" class="form-control" name="waist" value="<%= measurement ? measurement.waist : '' %>"></div>
+        <div class="col-6"><label class="form-label">Hip (in)</label><input type="number" step="0.1" class="form-control" name="hip" value="<%= measurement ? measurement.hip : '' %>"></div>
+        <div class="col-6"><label class="form-label">Shoulder (in)</label><input type="number" step="0.1" class="form-control" name="shoulder" value="<%= measurement ? measurement.shoulder : '' %>"></div>
+        <div class="col-6"><label class="form-label">Sleeve Length (in)</label><input type="number" step="0.1" class="form-control" name="sleeve_length" value="<%= measurement ? measurement.sleeve_length : '' %>"></div>
+        <div class="col-6"><label class="form-label">Shirt Length (in)</label><input type="number" step="0.1" class="form-control" name="shirt_length" value="<%= measurement ? measurement.shirt_length : '' %>"></div>
+        <div class="col-6"><label class="form-label">Inseam (in)</label><input type="number" step="0.1" class="form-control" name="inseam" value="<%= measurement ? measurement.inseam : '' %>"></div>
+        <div class="col-6"><label class="form-label">Neck (in)</label><input type="number" step="0.1" class="form-control" name="neck" value="<%= measurement ? measurement.neck : '' %>"></div>
+        <div class="col-12"><label class="form-label">Notes (fit preference, etc.)</label><textarea class="form-control" name="notes" rows="3"><%= measurement ? measurement.notes : '' %></textarea></div>
+      </div>
+      <button class="btn btn-primary-boutique mt-3 w-100">Save Measurements</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

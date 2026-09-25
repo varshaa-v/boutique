@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>My Orders | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="page-title">Welcome, <%= me.name %></div>
+
+  <div class="row g-3 mb-2">
+    <div class="col-md-3 col-6">
+      <div class="stat-card bg-maroon"><div class="stat-num"><%= orders.length %></div><div class="stat-label">Active Orders</div></div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card bg-gold"><div class="stat-num"><%= me.capacity_per_week %></div><div class="stat-label">Weekly Capacity</div></div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card bg-green"><div class="stat-num"><%= completedCount %></div><div class="stat-label">Completed (all time)</div></div>
+    </div>
+  </div>
+
+  <div class="card-soft">
+    <div class="section-title">Your Orders — Sorted by Deadline</div>
+    <% if (orders.length === 0) { %>
+      <div class="empty-state"><i class="bi bi-emoji-smile"></i><p class="mt-2">No active orders assigned to you right now.</p></div>
+    <% } %>
+    <% orders.forEach(o => { %>
+      <div class="border-bottom pb-3 mb-3">
+        <div class="d-flex justify-content-between flex-wrap">
+          <div>
+            <strong>#<%= o.id %> — <%= o.garment_type %></strong>
+            <span class="priority-<%= o.priority %> ms-2">(<%= o.priority %> priority)</span>
+          </div>
+          <div><span class="badge-status status-<%= o.status %>"><%= o.status.replace('_',' ') %></span></div>
+        </div>
+        <div class="text-muted small mt-1">Customer: <%= o.customer_name %> (<%= o.customer_phone || 'no phone' %>) · Due: <strong><%= o.due_date %></strong></div>
+        <div class="mt-1"><strong>Requirement:</strong> <%= o.customization_details || '—' %></div>
+        <% if (o.design_notes) { %><div><strong>Design Notes:</strong> <%= o.design_notes %></div><% } %>
+        <div class="mt-1"><strong>Fabric:</strong> <%= o.fabric_name || 'Not allocated yet' %> <% if (o.fabric_allocated_meters) { %>(<%= o.fabric_allocated_meters %>m allocated)<% } %></div>
+
+        <form method="POST" action="/tailor/orders/<%= o.id %>/status" class="mt-2 d-flex gap-2">
+          <select name="status" class="form-select form-select-sm" style="max-width:220px;">
+            <option value="assigned" <%= o.status==='assigned'?'selected':'' %>>Assigned</option>
+            <option value="in_progress" <%= o.status==='in_progress'?'selected':'' %>>In Progress</option>
+            <option value="completed" <%= o.status==='completed'?'selected':'' %>>Completed</option>
+          </select>
+          <button class="btn btn-sm btn-gold">Update Status</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+</div>
+</body>
+</html>

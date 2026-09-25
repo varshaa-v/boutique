@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>My Orders | StitchStudio</title><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="page-wrap">
+  <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <div class="page-title mb-0">My Orders</div>
+    <a href="/customer/orders/new" class="btn btn-primary-boutique"><i class="bi bi-plus-lg"></i> Place New Order</a>
+  </div>
+
+  <% if (orders.length === 0) { %>
+    <div class="empty-state"><i class="bi bi-bag"></i><p class="mt-2">No orders yet.</p></div>
+  <% } %>
+
+  <% orders.forEach(o => { %>
+    <div class="card-soft">
+      <div class="d-flex justify-content-between flex-wrap">
+        <div>
+          <strong><%= o.garment_type %></strong> <span class="text-muted small">Order #<%= o.id %></span>
+        </div>
+        <span class="badge-status status-<%= o.status %>"><%= o.status.replace('_',' ') %></span>
+      </div>
+      <div class="text-muted small mt-1">Ordered: <%= o.order_date %> · Due: <strong><%= o.due_date %></strong> · Priority: <span class="priority-<%= o.priority %>"><%= o.priority %></span></div>
+      <div class="mt-2"><strong>Customization / Requirements:</strong> <%= o.customization_details || '—' %></div>
+      <% if (o.design_notes) { %><div><strong>Design Notes:</strong> <%= o.design_notes %></div><% } %>
+      <div class="text-muted small mt-1">
+        Tailor: <%= o.tailor_name || 'Not assigned yet' %>
+        <% if (o.fabric_name) { %> · Fabric: <%= o.fabric_name %> (<%= o.fabric_allocated_meters %>m)<% } %>
+      </div>
+    </div>
+  <% }) %>
+</div>
+</body>
+</html>
